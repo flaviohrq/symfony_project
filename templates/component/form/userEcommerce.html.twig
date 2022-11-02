@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 h-screen">
+
+<section>
+
+    <div class="h-screen flex justify-center items-center">
+
+        <form class="w-64 text-center">
+            <input
+                class="px-6 py-4 rounded-xl" 
+                name="name" 
+                placeholder="Saisir un nom"
+                value="{{userToForm.getName}}"
+            /> 
+            <div class="flex justify-center">
+                <div class="px-4 py-2 mt-8 w-40 rounded-xl text-black bg-[#C6B99380]" >
+                    <a href="{{ path('homepage_admin') }}">SE CONNECTER</a>
+                </div>
+            </div>   
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+</html>

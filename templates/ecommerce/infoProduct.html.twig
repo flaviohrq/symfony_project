@@ -1,0 +1,36 @@
+{{ include("header/headerClient.html.twig") }}
+
+<section class="flex justify-center">
+    <div class="my-20">
+
+        <div class="grid grid-cols-2 gap-10"> 
+            <img src={{image}} alt"Symfony!" class="h-96 w-96"/>
+            <div class="">
+                <h1 class="w-96 montserrat700">{{name}}</h1>
+                <h2 class="montserrat400">{{artist}}</h2>
+                <p class="w-96 pt-16 hindMadurai300">{{description}}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="flex justify-center">
+    <div class="my-16 text-center">
+        <h1 class="mb-8 montserrat700">Vinyls du même artiste</h1>
+        <div class="h-32 grid grid-cols-4 gap-20"> 
+        {% for element in products|slice(0, 4) %}
+                {% if element.getBrand == product.getBrand and element.getId != product.getId %}
+                    <a href="{{path('product_info', {id: element.getId}) }}">
+                        <img src={{ element.getFaceImage }} alt"Symfony!" class="h-32 w-32"/>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+    </div>
+</section>
+
+
+
+
+

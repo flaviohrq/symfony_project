@@ -1,0 +1,33 @@
+{{ include("header/headerClient.html.twig") }}
+
+<section class="flex justify-center">
+    <div class="border-2 border-black my-24 mx-64 pt-12 p-16">
+        <div class="flex justify-center">
+            <h1 class="lobsterTwo700 text-4xl mb-8">
+                Vinyls
+            </h1>
+        </div>
+        <p class="text-justify montserrat400">
+            <b>Vinyls</b> est le premier site web dédié exclusivement a <b>l'achat</b> de vinyles de vos artistes préférés ! En plus de la possibilité d'achat vous pourrez égalemment trouver, pour chaque album de chaque artiste, <b>une description</b> qui vous permettera d'en savoir plus sur l'album en question. Vous pourrez aussi vous perdre parmis les vinyles de chaque artiste grâce aux <b>suggestions</b> de produits similaire sous chaque page de produits !  
+        </p>
+    </div>
+</section>
+
+<section class="flex justify-center">
+    <div class="my-20  grid grid-cols-2 gap-28">
+
+        {% for product in product|reverse %}
+            <a href="{{path('product_info', {id: product.getId}) }}">
+                <div class="w-96">
+                    <img src="{{ product.getFaceImage }}" alt"Symfony!" class="h-96 w-96 pb-2"/>
+                    <h1 class="montserrat700" > {{ product.getName }} </h1>
+                    <h2 class="montserrat400" > {{ product.getPrice }} $ </h2>
+                </div>
+            </a>
+        {% endfor %}
+
+    </div>
+</section>
+
+</body>
+</html>

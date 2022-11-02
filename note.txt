@@ -1,0 +1,155 @@
+#[Route('/cars', name: 'cars')]
+    public function createCarsManuel(ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $car = new Car();
+        $car->setMake('Porsche');
+        $car->setModel('911');
+        $car->setPrice('70000');
+        $car->setYear('1970');
+        $car->setHorsepower('125');
+
+        $entityManager->persist($car);
+
+        $entityManager->flush();
+
+        return new Response('Saved new product with id : '.$car->getId());
+
+    }
+
+    #[Route('/cars/create', name: 'cars_create')]
+    public function createCar(): Response
+    {
+        return $this->render('car/create.html.twig', [
+        ]);
+    }
+
+    #[Route('/cars/form', name: 'cars_form')]
+    public function sortCar(ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $car = new Car();
+        $car->setMake(htmlspecialchars($_REQUEST['make']));
+        $car->setModel(htmlspecialchars($_REQUEST['model']));
+        $car->setPrice(htmlspecialchars($_REQUEST['price']));
+        $car->setYear(htmlspecialchars($_REQUEST['year']));
+        $car->setHorsepower(htmlspecialchars($_REQUEST['horsepower']));
+
+        $entityManager->persist($car);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('cars_show',["id"=>$car->getId()]);
+    }
+    
+    #[Route('/cars/all', name: 'cars_all')]
+    public function showAll(CarRepository $carRepository): Response
+    {
+        $all = $carRepository->findAll();
+
+        $output = array_map(function ($object) { 
+            return 
+                "</br>id : " . $object->getId() . 
+                " / Model : " . $object->getModel() . 
+                " <a href=http://127.0.0.1:8000/cars/". $object->getId() . ">Voir les détails</a>" .
+                " <a href=http://127.0.0.1:8000/cars/". $object->getId() . "/delete>Supprimer</a>" ; 
+        }, $all);
+        return new Response('All cars '. implode(", ", $output));
+    }
+
+    #[Route('/cars/{id}', name: 'cars_show')]
+    public function show_cars(Car $car): Response
+    {   
+        if (!$car) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+
+        return new Response(
+            " <a href=http://127.0.0.1:8000/cars/all" . ">Retour</a></br>" .
+            'Marque : ' . $car->getMake() . "</br>". 
+            'Model : ' . $car->getModel() . "</br>". 
+            'Prix : ' . $car->getPrice() . "$" . "</br>". 
+            'Année de fabrication : ' . $car->getYear() . "</br>". 
+            'Chevaux : ' . $car->getHorsepower() . " ch"  
+        );
+    }
+
+    #[Route('cars/{id}/delete', name: 'cars_delete')]
+    public function delete(ManagerRegistry $doctrine, Car $car): Response {
+        
+        $entityManager = $doctrine->getManager();
+
+        if (!$car) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+
+        $entityManager->remove($car);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('cars_all');
+    }
+
+
+    private $productList;
+
+    public function __construct() {
+
+        $prosche911 = new Product(
+            "porsche-911-carrera",
+            "Porsche 911 Carrera 3.2",
+            "75 000 $", 
+            "Modèle datant des années 1983 à 1989...",
+            'https://cdn.elferspot.com/wp-content/uploads/2021/04/Porsche-911-Carrera-3.2-Clubsport.jpeg'
+        );
+
+        $ferrariF40 = new Product(
+            "ferrari-F40",
+            "Ferrari F40",
+            "2 000 000 $", 
+            "Modèle datant des années 1987 à 1992...",
+            'https://www.gts-models.com/wp-content/uploads/2021/06/gts80023-ferrari-f40-lm-02.jpg'
+        );
+
+        $this->productList = array(
+            $prosche911->getSlug() => $prosche911,
+            $ferrariF40->getSlug() => $ferrariF40
+        );
+
+    }
+
+    #[Route('/connect', name: 'ecommerce_connect')]
+    public function connexion(): Response
+    {
+        $admin = new User("admin");
+        return $this->render('ecommerce/connexion.html.twig', [
+            "admin"=>$admin
+        ]);
+    }
+
+    #[Route('/admin', name: 'homepage_admin')]
+    public function homepage_admin(): Response
+    {
+        return $this->render('ecommerce/homepageAdmin.html.twig');
+    }
+
+    #[Route('/homepage', name: 'homepage_client')]
+    public function homepage_client(): Response
+    {
+        return $this->render('ecommerce/homepageClient.html.twig', [
+            "product"=>$this->productList,
+        ]);
+    }
+
+    #[Route('/product/{slug}', name: 'product_info')]
+    public function show(string $slug): Response
+    {    
+        return $this->render('ecommerce/infoProduct.html.twig', [
+            'products'=> $this->productList[$slug]
+        ]);
+    }

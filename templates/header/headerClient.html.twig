@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href= "{{ asset('css/style.css')}}" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white h-screen">
+
+    <section class="z-10 sticky bg-black text-center">
+        <h2 class="text-white p-4 tracking-tight">
+            N'HÉSITEZ PAS A VOUS ABONNER AU NEWSLETTER !
+        </h2>
+    </section>
+
+    <section class="bg-white border-b w-screen sticky top-0">
+        <div class="flex justify-between items-center px-8">
+            <div class="">
+                <a href="{{ path('homepage') }}" class="lobsterTwo700 text-4xl py-4 inline-block cursor-pointer">
+                    Vinyls
+                </a>
+            </div>
+                <a  href="{{ path('app_logout') }}" class="montserrat700large text-black px-4 py-2 rounded-xl text-white hover:bg-[#C6B99380] hover:underline"> 
+                    DÉCONNEXION
+                </a>
+            </div>
+        </div>
+    </section>

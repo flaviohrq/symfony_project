@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+{% block body %}
+    {%  if error %}
+        <div>{{ error.messageKey|trans(error.messageDate, 'security') }}</div>
+    {% endif %}
+
+    <section class="bg-slate-50 h-screen">
+
+    <div class="h-screen flex justify-center items-center">
+
+        <form class="w-64 text-center" action="{{ path('homepage_admin') }}" methode="post">
+            <label for="username">Email:</label>
+            <input
+                class="px-6 py-4 mt-2 mb-6 rounded-xl"
+                type="text"
+                id="username" 
+                name="_username" 
+                value="{{ last_username }}"
+            />
+            <label for="password">Password:</label>
+            <input
+                class="px-6 py-4 mt-2 rounded-xl"
+                type="password"
+                id="password" 
+                name="_password" 
+            />  
+            <div class="flex justify-center">
+                <div class="px-4 py-2 mt-8 w-40 rounded-xl text-black bg-[#C6B99380]" >
+                    <button type="submit">SE CONNECTER</button>
+                </div>
+            </div>   
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+</body>
+</html>
